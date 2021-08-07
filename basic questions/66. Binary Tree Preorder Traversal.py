@@ -1,4 +1,5 @@
 # Given a binary tree, return the preorder traversal of its nodes' values.
+# left -> root -> right
 # Example:
 # input :{1,2,3,4,5}
 # output: [1,2,4,5,3]
