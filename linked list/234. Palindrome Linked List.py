@@ -27,29 +27,43 @@ class Solution:
         return True
     
 # Follow up: Could you do it in O(n) time and O(1) space?
-
 class Solution2:
     def isPalindrome(self, head: Optional[ListNode]) -> bool:
-        if not head:
+        if not head or not head.next:
             return True
         
-        fast = slow = head
-        dummy = None
-        while fast and fast.next:
+        fast, slow = head, head
+        while fast.next and fast.next.next:
             fast = fast.next.next
-            pointer = slow.next
-            slow.next = dummy
-            dummy = slow
-            slow = pointer
+            slow = slow.next
         
-        if fast:
-            slow = slow.next
-
-        while slow:
-            if slow.val != dummy.val:
-                return False
-            slow = slow.next
-            dummy = dummy.next
-        return True
+        first_half_end = slow
+        second_half_start = self.reverseList(first_half_end.next)
+        
+        first_half = head
+        second_half = second_half_start
+        result = True
+        
+        while result and second_half:
+            if first_half.val != second_half.val:
+                result = False
+            first_half = first_half.next
+            second_half = second_half.next
+        
+        first_half_end = self.reverseList(second_half_start)
+        return result
+    
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return head
+        
+        dummy = None
+        while head:
+            next_node = head.next
+            head.next = dummy
+            dummy = head
+            head = next_node
+        return dummy
+            
             
             
