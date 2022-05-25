@@ -1,12 +1,26 @@
-# O(n^3)
-from typing import List
-
+# # O(n^(k - 1))
+from typing import (
+    List,
+)
 
 class Solution:
-    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
-
+    """
+    @param a: an integer array
+    @param k: a postive integer <= length(A)
+    @param target: an integer
+    @return: A list of lists of integer
+             we will sort your return value in output
+    """
+    def k_sum_i_i(self, a: List[int], k: int, target: int) -> List[List[int]]:
+        # write your code here
         def kSum(nums: List[int], target: int, k: int) -> List[List[int]]:
             if not nums or nums[0] * k > target or nums[-1] * k < target:
+                return []
+
+            if k == 1:
+                for num in a:
+                    if num == target:
+                        return [[num]]
                 return []
 
             if k == 2:
@@ -42,6 +56,6 @@ class Solution:
                     left += 1
 
             return result
-
-        nums.sort()
-        return kSum(nums, target, 4)
+        
+        a.sort()
+        return kSum(a, target, k)

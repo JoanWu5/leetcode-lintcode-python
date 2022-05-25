@@ -1,3 +1,4 @@
+# O(n^2)
 class Solution:
     """
     @param S: A list of integers
@@ -9,24 +10,17 @@ class Solution:
             return 0
         
         S.sort()
+        result = 0
 
-        count = 0
-        n = len(S)
+        for i in range(len(S)):
+            left, right = 0, i - 1
+            while left < right:
+                current_sum = S[left] + S[right]
+                if current_sum > S[i]:
+                    result += right - left
+                    right -= 1
+                else:
+                    left += 1
         
-        for i in range(len(S) - 1, -1, -1):
-            start, end = 0, i - 1
-            count += self.count_two(S[i], start, end, S)
-
-        return count
+        return result
         
-    def count_two(self, c, start, end, S):
-        count = 0
-        while start < end:
-            current_sum = S[start] + S[end] - c
-            if current_sum > 0:
-                count += end - start
-                end -= 1
-            else:
-                start += 1
-        
-        return count
