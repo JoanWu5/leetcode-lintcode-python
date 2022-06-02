@@ -1,3 +1,4 @@
+# O(min(n, m)) = O(n + m)
 from typing import List
 
 class Solution:
@@ -21,8 +22,7 @@ class Solution:
 
 # Cases to take into consideration include:
 # duplicates, negative values, single value lists, 0's, and empty list arguments.
-# Other considerations might include
-# sparse arrays.
+# Other considerations might include sparse arrays.
 
 
 class Solution2:

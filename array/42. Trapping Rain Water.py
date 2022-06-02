@@ -1,6 +1,6 @@
 from typing import List
 
-# dp
+# dp: O(n)
 class Solution:
     def trap(self, height: List[int]) -> int:
         if not height:
@@ -27,25 +27,25 @@ class Solution:
         
         return trapWater
 
-# two pointers
-class Solution2:
+# two pointers: O(n)
+class Solution:
     def trap(self, height: List[int]) -> int:
-        if not height:
+        if not height or len(height) < 3:
             return 0
         
-        n = len(height)
-        left, right = 0, n - 1
-        l_max, r_max = 0, 0
-        trapWater = 0
+        water = 0
+        left, right = 0, len(height) - 1
         
-        while left < right:
-            l_max = max(l_max, height[left])
-            r_max = max(r_max, height[right])
-            if l_max <= r_max:
-                trapWater += l_max - height[left]
+        left_max, right_max = 0, 0
+        while left <= right:
+            left_max = max(left_max, height[left])
+            right_max = max(right_max, height[right])
+            
+            if left_max <= right_max:
+                water += left_max - height[left]
                 left += 1
             else:
-                trapWater += r_max - height[right]
+                water += right_max - height[right]
                 right -= 1
-        
-        return trapWater
+
+        return water

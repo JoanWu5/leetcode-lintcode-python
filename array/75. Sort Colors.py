@@ -1,3 +1,4 @@
+# O(n)
 from typing import List
 
 
@@ -9,17 +10,20 @@ class Solution:
         if not nums:
             return
         
-        pointer, start, end = 0, 0, len(nums) - 1
-        while pointer <= end:
-            if nums[pointer] == 0:
-                nums[start], nums[pointer] = nums[pointer], nums[start]
-                start += 1
-                pointer += 1
-            elif nums[pointer] == 1:
-                pointer += 1
+        self.partition(nums, 0, len(nums) - 1, 0, 2)
+        
+    def partition(self, nums: List[int], left: int, right: int, pivot_left: int, pivot_right: int):
+        current = left
+        while current <= right:
+            if nums[current] == pivot_left:
+                nums[current], nums[left] = nums[left], nums[current]
+                left += 1
+                current += 1
+            elif nums[current] == pivot_right:
+                nums[current], nums[right] = nums[right], nums[current]
+                right -= 1
             else:
-                nums[pointer], nums[end] = nums[end], nums[pointer]
-                end -= 1
+                current += 1
         
             
             

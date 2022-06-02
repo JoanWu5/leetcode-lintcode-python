@@ -1,27 +1,24 @@
+# O(mn)
 class Solution:
-    def multiply(self, num1: str, num2: str) -> str:
-        n1 = len(num1)
-        n2 = len(num2)
-        pointer1, pointer2 = n1 - 1, n2 - 1
-        result = 0
-        flag = 0
-        count1 = 1
-        
-        while pointer1 >= 0:
-            pointer2 = n2 - 1
-            count2 = 1
-            while pointer2 >= 0:
-                multiplier = (ord(num1[pointer1]) - ord('0')) * (ord(num2[pointer2]) - ord('0')) + flag
-                
-                flag = multiplier // 10
-                result += (multiplier % 10) * count1 * count2
-                count2 *= 10
-                pointer2 -= 1
-                
-            result += flag * count1 * count2
-            pointer1 -= 1
-            count1 *= 10
-            flag = 0
-        
-        
-        return str(result)
+    def multiply(self, nums1: str, nums2: str) -> str:
+        if nums1 == "0" or nums2 == "0":
+            return "0"
+
+        n = len(nums1) + len(nums2)
+        result = [0] * n
+
+        for pointer1 in range(len(nums1) - 1, -1, -1):
+            for pointer2 in range(len(nums2) - 1, -1, -1):
+                nums_zeros = pointer1 + pointer2 + 1
+                multiplier = (ord(nums1[pointer1]) - ord('0')) * \
+                    (ord(nums2[pointer2]) - ord('0')) + result[nums_zeros]
+
+                result[nums_zeros] = multiplier % 10
+                result[nums_zeros - 1] += multiplier // 10
+
+        for i in range(len(result)):
+            if result[i] != 0:
+                result = result[i:]
+                break
+
+        return "".join(str(digit) for digit in result)

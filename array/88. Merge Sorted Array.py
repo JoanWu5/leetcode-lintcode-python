@@ -1,3 +1,4 @@
+# O(m + n)
 from typing import List
 
 class Solution:

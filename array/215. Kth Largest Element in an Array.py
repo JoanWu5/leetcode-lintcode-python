@@ -4,35 +4,36 @@ from typing import List
 #  O(NlogK) space: O(K)
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        if not nums or k > len(nums):
-            return None
-        largestIndex = len(nums) - k
-        
-        midIndex = self.partition(nums, 0, len(nums) - 1)
-        if midIndex == largestIndex:
-            return nums[midIndex]
-        elif midIndex < largestIndex:
-            return self.findKthLargest(nums[midIndex:], k)
-        else:
-            return self.findKthLargest(nums[:midIndex], k - (len(nums) - midIndex))
-    
-    def partition(self, nums: List[int], left: int, right: int) -> int:
-        if left > right:
+        if not nums or k <= 0 or k > len(nums):
             return
         
-        pivotIndex = random.randint(left, right)
-        pivot = nums[pivotIndex]
+        return self.select(nums, len(nums) - k, 0, len(nums) - 1)
+    
+    def partition(self, nums: List[int], left: int, right: int) -> int:
+        if left >= right:
+            return left
+    
+        pivot_index = random.randint(left, right)
+        pivot = nums[pivot_index]
+        nums[right], nums[pivot_index] = nums[pivot_index], nums[right]
+        pointer = left
+        for i in range(left, right):
+            if nums[i] <= pivot:
+                nums[pointer], nums[i] = nums[i], nums[pointer]
+                pointer += 1
+                
+        nums[right], nums[pointer] = nums[pointer], nums[right]
+        return pointer
+    
+    def select(self, nums: List[int], k_smallest: int, left: int, right: int):
+        split = self.partition(nums, left, right)
+        if split == k_smallest:
+            return nums[split]
         
-        nums[pivotIndex], nums[right] = nums[right], nums[pivotIndex]
-        midIndex = left
+        if split > k_smallest:
+            return self.select(nums, k_smallest, left, split - 1)
         
-        for pointer in range(left, right):
-            if nums[pointer] <= pivot:
-                nums[midIndex], nums[pointer] = nums[pointer], nums[midIndex]
-                midIndex += 1
-        
-        nums[midIndex], nums[right] = nums[right], nums[midIndex]
-        return midIndex
+        return self.select(nums, k_smallest, split + 1, right)
 
 # quickSort O(N^2) space: O(N)    
 import random
