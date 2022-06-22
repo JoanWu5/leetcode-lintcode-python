@@ -1,23 +1,27 @@
+# O(n * logm) where m = max(piles)
 from typing import List
 import math
 
+
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        left = 1
-        right = max(piles)
-        while left < right:
+        if not piles or len(piles) > h:
+            return 0
+
+        left, right = 1, max(piles)
+        while left + 1 < right:
             mid = left + (right - left) // 2
-            if self.canEatingAll(piles, h, mid):
-                right = mid
+            if self.getBananaHours(piles, mid) > h:
+                left = mid
             else:
-                left = mid + 1
-        return left
-     
-    def canEatingAll(self, piles: List[int], h: int, speed: int) -> bool:
+                right = mid
+
+        if self.getBananaHours(piles, left) <= h:
+            return left
+        return right
+
+    def getBananaHours(self, piles: List[int], speed: int) -> int:
         hours = 0
-        for pile in piles:
-            hours += math.ceil(pile / speed)
-        return hours <= h
-
-
-                
+        for banana in piles:
+            hours += int(math.ceil(banana / speed))
+        return hours

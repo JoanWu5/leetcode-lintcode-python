@@ -1,8 +1,7 @@
 from typing import List
 
-
+# O(M + N)
 class Solution:
-    # O(M + N)
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         if matrix is None or len(matrix) == 0 or len(matrix[0]) == 0:
             return False
@@ -20,25 +19,29 @@ class Solution:
                 row -= 1
         return False
 
-    # O(logM + logN)
-    def searchMatrix2(self, matrix: List[List[int]], target: int) -> bool:
-        if matrix is None or len(matrix) == 0 or len(matrix[0]) == 0:
+# O(logM + logN)
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        if not matrix or not matrix[0]:
             return False
-        m = len(matrix)
-        n = len(matrix[0])
         
-        begin, end = 0, m * n - 1
-        while begin <= end:
-            mid = begin + (end - begin) // 2
-            midValue = matrix[mid // n][mid % n]
-            if midValue == target:
+        n, m = len(matrix), len(matrix[0])
+        left, right = 0, n * m - 1
+        while left + 1 < right:
+            mid = left + (right - left) // 2
+            mid_num = matrix[mid // m][mid % m]
+            if mid_num == target:
                 return True
-            elif midValue < target:
-                begin = mid + 1
+            if mid_num > target:
+                right = mid
             else:
-                end = mid - 1
+                left = mid
+
+        if matrix[left // m][left % m] == target:
+            return True
+        if matrix[right // m][right % m] == target:
+            return True
         return False
-            
     
     
 

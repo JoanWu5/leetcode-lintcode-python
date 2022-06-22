@@ -1,6 +1,4 @@
-from typing import List
-
-
+# O(logn)
 class ArrayReader:
     def __init__(self) -> None:
         self.reader = []
@@ -9,18 +7,24 @@ class ArrayReader:
         return self.reader[index]
 
 class Solution:
-    def searchUnknownSizeArray(self, reader: ArrayReader, nums: List[int], target: int) -> int:
-        array_length = 1
-        while reader.get(nums[array_length]) < target:
-            array_length *= 2
+    def search(self, reader: 'ArrayReader', target: int) -> int:
+        left = 0
+        right = 1
+        while reader.get(right) < target:
+            right *= 2
         
-        left, right = array_length //2 , array_length
-        while left <= right:
+        while left + 1 < right:
             mid = left + (right - left) // 2
-            if nums[mid] == target:
+            if reader.get(mid) == target:
                 return mid
-            elif nums[mid] < target:
-                left = mid + 1
+            if reader.get(mid) > target:
+                right = mid
             else:
-                right = mid - 1
+                left = mid
+        
+        if reader.get(left) == target:
+            return left
+        if reader.get(right) == target:
+            return right
+        
         return -1
